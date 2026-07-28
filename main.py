@@ -29,7 +29,7 @@ while True:
             print("Started holding W + E and moveing MOUSE to the right")
             HoldKey(W)
             HoldKey(E)
-            # MouseMoveUp(500, .1, 10)
+            #MouseMove(10,  0.01)
         else:
             print("Stopped holding W + E and moveing MOUSE to the right")
             ReleaseKey(W)
@@ -43,13 +43,6 @@ while True:
     # Exit the script
     if keyboard.is_pressed("shift+backspace"):
         break
-
-
-    if keyboard.is_pressed("num 0"):
-        print("releasing W + E ")
-        ReleaseKey(W)
-        ReleaseKey(E)
-
 
     time.sleep(0.01)
 

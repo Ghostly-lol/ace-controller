@@ -162,15 +162,3 @@ def MouseMove(pixels, delay):
                 break
         mouse.position = mouse.position[0] + pixels, mouse.position[1]
         time.sleep(delay)
-
-
-# moves the mouse for a set amout of pixles up
-def MouseMoveUp(pixels, delay, duration):
-    end_time = time.time() + duration
-    
-    while time.time() < end_time:
-        if keyboard.is_pressed("shift+backspace"):
-           break
-        
-        mouse.position = mouse.position[0], mouse.position[1] - pixels
-        time.sleep(delay)
