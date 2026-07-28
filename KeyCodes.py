@@ -6,7 +6,7 @@ import time
 import ctypes
 import pynput
 import keyboard
-from pynput.mouse import Controller
+from pynput.mouse import Button, Controller
 # import mouse
 
 mouse = Controller()
@@ -155,22 +155,21 @@ def HoldAndReleaseKey(hexKeyCode, seconds):
     time.sleep(seconds)
     ReleaseKey(hexKeyCode)
 
-def MouseMove(pixels, delay):
-    
+# moves the mouse in a direct constently
+def MouseMoveContinuously(pixels, delay):
     while True:
         if keyboard.is_pressed("shift+backspace"):
                 break
         mouse.position = mouse.position[0] + pixels, mouse.position[1]
         time.sleep(delay)
 
+# moves the mouse for a set amout of pixles
+def MouseMove(pixels, delay):
+    mouse.position = mouse.position[0] + pixels, mouse.position[1]
+    time.sleep(delay)
 
-# moves the mouse for a set amout of pixles up
-def MouseMoveUp(pixels, delay, duration):
-    end_time = time.time() + duration
-    
-    while time.time() < end_time:
-        if keyboard.is_pressed("shift+backspace"):
-           break
-        
-        mouse.position = mouse.position[0], mouse.position[1] - pixels
-        time.sleep(delay)
+# left click button pressed and releaced
+def HoldAndReleaseMouse(seconds):
+    mouse.press(Button.left)
+    time.sleep(seconds)
+    mouse.release(Button.left)
