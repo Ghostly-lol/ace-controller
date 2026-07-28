@@ -44,6 +44,20 @@ def game_acctions():
     time.sleep(2)
     # end of restart sequence
 
+    # start of up movment and acceleration
+    time.sleep(5)
+    MoveMouseUpContinuously(1, 0.001, 10)
+    HoldKey(W)
+    time.sleep(7)
+    ReleaseKey(W)
+
+
+def MoveMouseUpContinuously(dy, delay, duration):
+    """Move mouse up continuously using DirectInput relative movement"""
+    end_time = time.time() + duration
+    while time.time() < end_time:
+        MouseMoveRelative(0, dy)  # negative dy = up, positive dy = down
+        time.sleep(delay)
 
 def counter():
 

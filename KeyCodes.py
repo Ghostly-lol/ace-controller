@@ -163,13 +163,60 @@ def MouseMoveContinuously(pixels, delay):
         mouse.position = mouse.position[0] + pixels, mouse.position[1]
         time.sleep(delay)
 
-# moves the mouse for a set amout of pixles
-def MouseMove(pixels, delay):
+# moves the mouse for a set amout of pixles to the right
+def MouseMoveRight(pixels, delay):
     mouse.position = mouse.position[0] + pixels, mouse.position[1]
     time.sleep(delay)
+
+
+
+
+# moves the mouse for a set amout of pixles up
+def MouseMoveUp(pixels, delay, duration):
+    end_time = time.time() + duration
+    
+    while time.time() < end_time:
+        # if keyboard.is_pressed("shift+backspace"):
+        #     break
+        
+        mouse.position = mouse.position[0], mouse.position[1] - pixels
+        time.sleep(delay)
+
+
 
 # left click button pressed and releaced
 def HoldAndReleaseMouse(seconds):
     mouse.press(Button.left)
     time.sleep(seconds)
     mouse.release(Button.left)
+
+
+
+# Structure for mouse input
+class MOUSEINPUT(ctypes.Structure):
+    _fields_ = [
+        ("dx", ctypes.c_long),
+        ("dy", ctypes.c_long),
+        ("mouseData", ctypes.c_ulong),
+        ("dwFlags", ctypes.c_ulong),
+        ("time", ctypes.c_ulong),
+        ("dwExtraInfo", ctypes.c_void_p),
+    ]
+
+class _INPUTunion(ctypes.Union):
+    _fields_ = [("mi", MOUSEINPUT)]
+
+class _INPUT(ctypes.Structure):
+    class _INPUT(ctypes.Structure):
+        _fields_ = [("type", ctypes.c_ulong), ("union", _INPUTunion)]
+    _anonymous_ = ("union",)
+    _fields_ = [("type", ctypes.c_ulong), ("union", _INPUTunion)]
+
+MOUSEEVENTF_MOVE = 0x0001
+
+def MouseMoveRelative(dx, dy):
+    """Send relative mouse movement via SendInput (works with DirectX games)"""
+    extra = ctypes.c_ulong(0)
+    mi = MOUSEINPUT(dx, dy, 0, MOUSEEVENTF_MOVE, 0, ctypes.cast(ctypes.pointer(extra), ctypes.c_void_p))
+    inp = _INPUT(ctypes.c_ulong(0), _INPUTunion(mi))
+    SendInput(1, ctypes.pointer(inp), ctypes.sizeof(inp))
