@@ -60,6 +60,19 @@ def counter():
         time.sleep(1)
 
 def version_1():
+
+    # Countdown before starting
+    countdown = 5
+    while countdown > 0:
+        print(countdown)
+        countdown -= 1
+        time.sleep(1)
+    print("")
+    print("Script is running in the background.")
+    print("Press NUMPAD 5 to toggle")
+    print("Press NUMPAD 0 to releace keys from being held")
+    print("Press Shift+Backspace to quit.")
+
     while True:
         # Toggle with Numpad 5
         if keyboard.is_pressed("num 5"):
@@ -87,6 +100,20 @@ def version_1():
         time.sleep(0.01)
 
 def version_2():
+
+# Countdown before starting
+    countdown = 5
+    while countdown > 0:
+        print(countdown)
+        countdown -= 1
+        time.sleep(1)
+
+    print("")
+    print("Script is running in the background.")
+    print("Press NUMPAD 5 to toggle")
+    print("Press NUMPAD 0 to releace keys from being held")
+    print("Press Shift+Backspace to quit.")
+
     while True:
         # Toggle with num pad 5
         if keyboard.is_pressed("num 5"):
@@ -175,18 +202,18 @@ selection = get_valid_input()
 print("")
 print(f"You selected: {selection}")
 
-print("")
-print("Script is running in the background.")
-print("Press NUMPAD 5 to toggle")
-print("Press NUMPAD 0 to releace keys from being held")
-print("Press Shift+Backspace to quit.")
-print("")
+# print("")
+# print("Script is running in the background.")
+# print("Press NUMPAD 5 to toggle")
+# print("Press NUMPAD 0 to releace keys from being held")
+# print("Press Shift+Backspace to quit.")
+# print("")
 
 if selection == "1":
-    countdown_to_start()
+    # countdown_to_start()
     version_1()
 elif selection == "2":
-    countdown_to_start()
+    # countdown_to_start()
     version_2()
 else:
     print("error")
