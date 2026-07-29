@@ -9,17 +9,10 @@ start_time = 0
 count_duration = 15.0 # 1 = 1 second
 phase_countdown = 15
 
-# Countdown before starting
-countdown = 5
-while countdown > 0:
-    print(countdown)
-    countdown -= 1
-    time.sleep(1)
+# ask user what kind of version to run
 
-print("Script is running in the background.")
-print("Press NUMPAD 5 to toggle")
-print("Press NUMPAD 0 to releace keys from being held")
-print("Press Shift+Backspace to quit.")
+# version_selected = input('Select version (1 or 2): ')
+
 
 
 
@@ -68,65 +61,106 @@ def counter():
 
 
 
+def version_2():
+    while True:
+        # Toggle with num pad 5
+        if keyboard.is_pressed("num 5"):
+            running = not running
 
-while True:
-    # Toggle with num pad 5
-    if keyboard.is_pressed("num 5"):
-        running = not running
 
+            if running:
+                start_time = time.time()
+                print("Started holding Acceleration and Yaw Right (W + E) ")
+                HoldKey(W)
+                HoldKey(E)
+                last_printed = None
+                # MouseMove(10,  0.01)
+                # print(phase_countdown)
+                # if timmer == 0:
+                    
+                #     game_acctions()
+                #     phase_countdown = 15
+            else:
+                print("Stopped holding Acceleration and Yaw Right (W + E) ")
+                ReleaseKey(W)
+                ReleaseKey(E)
+                last_printed = None
+
+            # Wait until the key is released so it only toggles once
+            while keyboard.is_pressed("num 5"):
+                time.sleep(0.01)
 
         if running:
-            start_time = time.time()
-            print("Started holding Acceleration and Yaw Right (W + E) ")
-            HoldKey(W)
-            HoldKey(E)
-            last_printed = None
-            # MouseMove(10,  0.01)
-            # print(phase_countdown)
-            # if timmer == 0:
+            elapsed = time.time() - start_time
+            remaining = int(count_duration - elapsed)
+
+            # Print each new countdown value
+            if remaining > 0 and remaining != last_printed:
+                print(remaining)
+                last_printed = remaining
+
+                # When the phase ends, run actions and reset the timer
+            if remaining <= 0:
+                print("Phase complete — running game actions!")
+                game_acctions()
+                HoldKey(W)                    
+                HoldKey(E) 
+                start_time = time.time()       # restart countdown
+                last_printed = None
                 
-            #     game_acctions()
-            #     phase_countdown = 15
-        else:
-            print("Stopped holding Acceleration and Yaw Right (W + E) ")
+            
+        # Exit the script
+        if keyboard.is_pressed("shift+backspace"):
+            break
+
+        if keyboard.is_pressed("num 0"):
+            print("releasing W + E ")
             ReleaseKey(W)
             ReleaseKey(E)
-            last_printed = None
-
-        # Wait until the key is released so it only toggles once
-        while keyboard.is_pressed("num 5"):
-            time.sleep(0.01)
-
-    if running:
-        elapsed = time.time() - start_time
-        remaining = int(count_duration - elapsed)
-
-        # Print each new countdown value
-        if remaining > 0 and remaining != last_printed:
-            print(remaining)
-            last_printed = remaining
-
-            # When the phase ends, run actions and reset the timer
-        if remaining <= 0:
-            print("Phase complete — running game actions!")
-            game_acctions()
-            HoldKey(W)                    
-            HoldKey(E) 
-            start_time = time.time()       # restart countdown
-            last_printed = None
-            
         
-    # Exit the script
-    if keyboard.is_pressed("shift+backspace"):
-        break
 
-    if keyboard.is_pressed("num 0"):
-        print("releasing W + E ")
-        ReleaseKey(W)
-        ReleaseKey(E)
-    
+        time.sleep(0.01)
 
-    time.sleep(0.01)
+
+def get_valid_input():
+    while True:
+        print("")
+        print("Select a command version")
+        print("Version 1: only holds accteraion and yaw right")
+        print("Version 2: holds accteraion and yaw right, flyes the plane to a high altitude to the center of the map and then triggers a restart after set time ")
+        print("")
+        user_input = input("Select version 1 or 2: ")
+        
+        if user_input == '1' or user_input == '2':
+            return user_input
+        else:
+            print("Error: Invalid selection. Please enter 1 or 2.\n")
+
+# Countdown before starting
+countdown = 5
+while countdown > 0:
+    print(countdown)
+    countdown -= 1
+    time.sleep(1)
+
+
+selection = get_valid_input()
+print("")
+print(f"You selected: {selection}")
+
+print("")
+print("Script is running in the background.")
+print("Press NUMPAD 5 to toggle")
+print("Press NUMPAD 0 to releace keys from being held")
+print("Press Shift+Backspace to quit.")
+print("")
+
+if selection == "1":
+    pass
+elif selection == "2":
+    version_2()
+else:
+    print("error")
 
 
 # Makes sure keys are released before exiting the program
