@@ -17,6 +17,8 @@ action_running = False
 
 def auto_restart_game():
      # start of restart menu sequence
+
+     #penis
     HoldAndReleaseKey(ESC, 1.5)
     time.sleep(1)
     HoldAndReleaseKey(S, .1)
