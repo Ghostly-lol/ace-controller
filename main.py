@@ -7,7 +7,7 @@ from colorama import Fore, Back, Style
 
 running = False
 start_time = 0
-count_duration = 15.0 # 1 = 1 second
+count_duration = 120.0 # 1 = 1 second | minimum of 80 seconds for intial actions
 action_running = False
 # phase_countdown = 15
 
@@ -21,22 +21,27 @@ def auto_restart_game():
     time.sleep(1)
     HoldAndReleaseKey(S, .1)
     time.sleep(1)
-    HoldAndReleaseKey(S, .1)                   
-    time.sleep(1)
+    # HoldAndReleaseKey(S, .1)                   
+    # time.sleep(1)
     HoldAndReleaseKey(ENTER, .5)
     time.sleep(2)
     HoldAndReleaseKey(W, .5)
     time.sleep(1)
-    HoldAndReleaseKey(ENTER, .5)
+    HoldAndReleaseKey(ENTER, .5
     time.sleep(2)
     # end of restart sequence
+
+def start_acceleration():
+    HoldKey(W)
+    time.sleep(7)
+    ReleaseKey(W)
 
 def move_up_and_accelerate():
     # start of up movment and acceleration
     time.sleep(5)
     MoveMouseUpContinuously(1, 0.001, 10)
     HoldKey(W)
-    time.sleep(7)
+    time.sleep(15)
     ReleaseKey(W)
 
 def toggle_autopilot():
@@ -86,9 +91,16 @@ def MoveMouseUpContinuously(dy, delay, duration):
 #         count -= 1
 #         time.sleep(1)
 
-def run_start_action_sequence():
+def run_initial_sequence():
     """Runs the full sequence in a background thread."""
     #runs start of moving up and acceleration then autopiolet
+    global action_running
+    print("Started autopilot")
+    toggle_autopilot()
+    print("Started acceleration")
+    start_acceleration()
+    print("Started autopilot")
+    toggle_autopilot()
     print("Started moving up and Accelerating")
     move_up_and_accelerate()
     print("Started autopilot")
@@ -98,18 +110,26 @@ def run_start_action_sequence():
     HoldKey(E)
     action_running = False
 
-def run_action_sequence():
+def run_phase_complete_sequence():
     """Runs the full sequence in a background thread."""
     #runs start of moving up and acceleration then autopiolet
     # game_acctions()
+    global action_running
     print("Started auto matic restart of game session")
     auto_restart_game()
+    print("Started autopilot")
+    toggle_autopilot()
+    print("Started acceleration")
+    start_acceleration()
+    print("Started autopilot")
+    toggle_autopilot()
     print("Started moving up and Accelerating")
     move_up_and_accelerate()
     print("Started autopilot")
     toggle_autopilot()
     HoldKey(W)                    
     HoldKey(E) 
+    action_running = False
 
 def version_1():
     # global running
@@ -154,7 +174,8 @@ def version_1():
         time.sleep(0.01)
 
 def version_2():
-    # global running
+    global running
+    global action_running
     # Countdown before starting
     countdown = 5
     while countdown > 0:
@@ -168,19 +189,20 @@ def version_2():
     print("Press NUMPAD 0 to releace keys from being held")
     print("Press Shift+Backspace to quit.")
 
-    action_thread = None
+    # action_thread = None
     start_time = 0
     last_printed = None
 
     while True:
         # Toggle with num pad 5
         if keyboard.is_pressed("num 5"):
-            global running
+            # global running
             running = not running
 
 
             if running:
                 start_time = time.time()
+                action_running = True
                 print("    Started program")
                 # print("Started moving up and Accelerating")
                 # move_up_and_accelerate()
@@ -189,12 +211,9 @@ def version_2():
                 # print("Started holding Acceleration and Yaw Right (W + E) ")
                 # HoldKey(W)
                 # HoldKey(E)
-                last_printed = None
-                action_thread = threading.Thread(
-                    target=run_start_action_sequence,
-                    daemon=True
-                )
-                action_thread.start()
+                # last_printed = None
+                t = threading.Thread(target=run_initial_sequence, daemon=True)
+                t.start()
                 # MouseMove(10,  0.01)
                 # print(phase_countdown)
                 # if timmer == 0:
@@ -223,6 +242,7 @@ def version_2():
                 # When the phase ends, run actions and reset the timer
             if remaining <= 0:
                 print("Phase complete — running game actions!")
+                action_running = True
                 # # game_acctions()
                 # print("Started auto matic restart of game session")
                 # auto_restart_game()
@@ -232,11 +252,10 @@ def version_2():
                 # toggle_autopilot()
                 # HoldKey(W)                    
                 # HoldKey(E) 
-                action_thread = threading.Thread(
-                    target=run_action_sequence,
-                    daemon=True
-                )
-                action_thread.start()
+                ReleaseKey(W)
+                ReleaseKey(E)
+                t = threading.Thread(target=run_phase_complete_sequence, daemon=True)
+                t.start()
                 start_time = time.time()       # restart countdown
                 last_printed = None
                 
