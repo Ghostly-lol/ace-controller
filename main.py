@@ -1,12 +1,14 @@
 import time
 import keyboard
 import pynput
+import threading
 from KeyCodes import *
 from colorama import Fore, Back, Style
 
 running = False
 start_time = 0
 count_duration = 15.0 # 1 = 1 second
+action_running = False
 # phase_countdown = 15
 
 # ask user what kind of version to run
@@ -84,6 +86,31 @@ def MoveMouseUpContinuously(dy, delay, duration):
 #         count -= 1
 #         time.sleep(1)
 
+def run_start_action_sequence():
+    """Runs the full sequence in a background thread."""
+    #runs start of moving up and acceleration then autopiolet
+    print("Started moving up and Accelerating")
+    move_up_and_accelerate()
+    print("Started autopilot")
+    toggle_autopilot()
+    print("Started holding Acceleration and Yaw Right (W + E) ")
+    HoldKey(W)
+    HoldKey(E)
+    action_running = False
+
+def run_action_sequence():
+    """Runs the full sequence in a background thread."""
+    #runs start of moving up and acceleration then autopiolet
+    # game_acctions()
+    print("Started auto matic restart of game session")
+    auto_restart_game()
+    print("Started moving up and Accelerating")
+    move_up_and_accelerate()
+    print("Started autopilot")
+    toggle_autopilot()
+    HoldKey(W)                    
+    HoldKey(E) 
+
 def version_1():
     # global running
     # Countdown before starting
@@ -141,6 +168,10 @@ def version_2():
     print("Press NUMPAD 0 to releace keys from being held")
     print("Press Shift+Backspace to quit.")
 
+    action_thread = None
+    start_time = 0
+    last_printed = None
+
     while True:
         # Toggle with num pad 5
         if keyboard.is_pressed("num 5"):
@@ -150,14 +181,20 @@ def version_2():
 
             if running:
                 start_time = time.time()
-                print("Started moving up and Accelerating")
-                move_up_and_accelerate()
-                print("Started autopilot")
-                toggle_autopilot()
-                print("Started holding Acceleration and Yaw Right (W + E) ")
-                HoldKey(W)
-                HoldKey(E)
+                print("    Started program")
+                # print("Started moving up and Accelerating")
+                # move_up_and_accelerate()
+                # print("Started autopilot")
+                # toggle_autopilot()
+                # print("Started holding Acceleration and Yaw Right (W + E) ")
+                # HoldKey(W)
+                # HoldKey(E)
                 last_printed = None
+                action_thread = threading.Thread(
+                    target=run_start_action_sequence,
+                    daemon=True
+                )
+                action_thread.start()
                 # MouseMove(10,  0.01)
                 # print(phase_countdown)
                 # if timmer == 0:
@@ -186,15 +223,20 @@ def version_2():
                 # When the phase ends, run actions and reset the timer
             if remaining <= 0:
                 print("Phase complete — running game actions!")
-                # game_acctions()
-                print("Started auto matic restart of game session")
-                auto_restart_game()
-                print("Started moving up and Accelerating")
-                move_up_and_accelerate()
-                print("Started autopilot")
-                toggle_autopilot()
-                HoldKey(W)                    
-                HoldKey(E) 
+                # # game_acctions()
+                # print("Started auto matic restart of game session")
+                # auto_restart_game()
+                # print("Started moving up and Accelerating")
+                # move_up_and_accelerate()
+                # print("Started autopilot")
+                # toggle_autopilot()
+                # HoldKey(W)                    
+                # HoldKey(E) 
+                action_thread = threading.Thread(
+                    target=run_action_sequence,
+                    daemon=True
+                )
+                action_thread.start()
                 start_time = time.time()       # restart countdown
                 last_printed = None
                 
@@ -207,6 +249,10 @@ def version_2():
             print("releasing W + E ")
             ReleaseKey(W)
             ReleaseKey(E)
+            ReleaseKey(S)
+            ReleaseKey(W)
+            ReleaseKey(ENTER)
+            ReleaseKey(ESC)
         
 
         time.sleep(0.01)
@@ -220,7 +266,8 @@ def get_valid_input():
         print("Version 2: holds accteraion and yaw right, flyes the plane to a high altitude to the center of the map and then triggers a restart after set time ")
         print("")
         user_input = input("Select version 1 or 2: ")
-        
+
+        # checks input selected
         if user_input == '1' or user_input == '2':
             return user_input
         else:
@@ -250,6 +297,8 @@ print(f"You selected: {selection}")
 # print("Press Shift+Backspace to quit.")
 # print("")
 
+
+# called selected version of the program
 if selection == "1":
     # countdown_to_start()
     version_1()
