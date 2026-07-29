@@ -7,7 +7,7 @@ from colorama import Fore, Back, Style
 
 running = False
 start_time = 0
-count_duration = 120.0 # 1 = 1 second | minimum of 80 seconds for intial actions
+count_duration = 1770.0 # 1 = 1 second | minimum of 80 seconds for intial actions
 action_running = False
 # phase_countdown = 15
 
@@ -30,7 +30,7 @@ def auto_restart_game():
     HoldAndReleaseKey(W, .5)
     time.sleep(1)
     HoldAndReleaseKey(ENTER, .5)
-    time.sleep(6)
+    time.sleep(10)
     HoldAndReleaseKey(ENTER, .5)
     time.sleep(10)
     HoldAndReleaseKey(ENTER, .5)
@@ -42,12 +42,12 @@ def auto_restart_game():
     HoldAndReleaseKey(ENTER, .5)
     time.sleep(30)
     HoldAndReleaseKey(ESC, .5)
-    time.sleep(2)
-    HoldAndReleaseKey(S, .5)
+    time.sleep(1)
+    HoldAndReleaseKey(S, .1)
     time.sleep(2)
     HoldAndReleaseKey(ENTER, .5)
     time.sleep(3)
-    HoldAndReleaseKey(W, .5)
+    HoldAndReleaseKey(W, .1)
     time.sleep(2)
     HoldAndReleaseKey(ENTER, .5)
     time.sleep(3)
@@ -65,7 +65,7 @@ def move_up_and_accelerate():
     time.sleep(5)
     MoveMouseUpContinuously(1, 0.001, 10)
     HoldKey(W)
-    time.sleep(15)
+    time.sleep(14.8)
     ReleaseKey(W)
 
 def toggle_autopilot():
@@ -296,6 +296,7 @@ def version_2():
             ReleaseKey(W)
             ReleaseKey(ENTER)
             ReleaseKey(ESC)
+            ReleaseKey(Z)
         
 
         time.sleep(0.01)
