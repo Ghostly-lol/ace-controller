@@ -7,7 +7,7 @@ from colorama import Fore, Back, Style
 running = False
 start_time = 0
 count_duration = 15.0 # 1 = 1 second
-phase_countdown = 15
+# phase_countdown = 15
 
 # ask user what kind of version to run
 
@@ -52,12 +52,12 @@ def MoveMouseUpContinuously(dy, delay, duration):
         MouseMoveRelative(0, dy)  # negative dy = up, positive dy = down
         time.sleep(delay)
 
-def counter():
+# def counter():
 
-    for count in range(phase_countdown, 0, -1):
-        print(count)
-        count -= 1
-        time.sleep(1)
+#     for count in range(phase_countdown, 0, -1):
+#         print(count)
+#         count -= 1
+#         time.sleep(1)
 
 def version_1():
     # global running
@@ -71,7 +71,7 @@ def version_1():
     print("")
     print("Script is running in the background.")
     print("Press NUMPAD 5 to toggle")
-    print("Press NUMPAD 0 to releace keys from being held")
+    # print("Press NUMPAD 0 to releace keys from being held")
     print("Press Shift+Backspace to quit.")
 
     while True:
@@ -192,6 +192,8 @@ def get_valid_input():
             print(Fore.RED + "Error: Invalid selection. Please enter 1 or 2.\n")
             print(Style.RESET_ALL)
 
+
+
 def countdown_to_start():
     # Countdown before starting
     countdown = 5
@@ -204,6 +206,7 @@ def countdown_to_start():
 selection = get_valid_input()
 print("")
 print(f"You selected: {selection}")
+
 
 # print("")
 # print("Script is running in the background.")
