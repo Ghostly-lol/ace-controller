@@ -60,13 +60,14 @@ def counter():
         time.sleep(1)
 
 def version_1():
-
+    # global running
     # Countdown before starting
     countdown = 5
     while countdown > 0:
         print(countdown)
         countdown -= 1
         time.sleep(1)
+        
     print("")
     print("Script is running in the background.")
     print("Press NUMPAD 5 to toggle")
@@ -76,6 +77,7 @@ def version_1():
     while True:
         # Toggle with Numpad 5
         if keyboard.is_pressed("num 5"):
+            global running
             running = not running
 
             if running:
@@ -100,8 +102,8 @@ def version_1():
         time.sleep(0.01)
 
 def version_2():
-
-# Countdown before starting
+    # global running
+    # Countdown before starting
     countdown = 5
     while countdown > 0:
         print(countdown)
@@ -117,6 +119,7 @@ def version_2():
     while True:
         # Toggle with num pad 5
         if keyboard.is_pressed("num 5"):
+            global running
             running = not running
 
 
