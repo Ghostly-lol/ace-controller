@@ -13,7 +13,32 @@ count_duration = 15.0 # 1 = 1 second
 
 # version_selected = input('Select version (1 or 2): ')
 
+def auto_restart_game():
+     # start of restart menu sequence
+    HoldAndReleaseKey(ESC, 1.5)
+    time.sleep(1)
+    HoldAndReleaseKey(S, .1)
+    time.sleep(1)
+    HoldAndReleaseKey(S, .1)                   
+    time.sleep(1)
+    HoldAndReleaseKey(ENTER, .5)
+    time.sleep(2)
+    HoldAndReleaseKey(W, .5)
+    time.sleep(1)
+    HoldAndReleaseKey(ENTER, .5)
+    time.sleep(2)
+    # end of restart sequence
 
+def move_up_and_accelerate():
+    # start of up movment and acceleration
+    time.sleep(5)
+    MoveMouseUpContinuously(1, 0.001, 10)
+    HoldKey(W)
+    time.sleep(7)
+    ReleaseKey(W)
+
+def toggle_autopilot():
+    HoldAndReleaseKey(Z, 10)
 
 
 def game_acctions():
@@ -27,7 +52,7 @@ def game_acctions():
     time.sleep(1)
     HoldAndReleaseKey(S, .1)
     time.sleep(1)
-    HoldAndReleaseKey(S, .1)
+    HoldAndReleaseKey(S, .1)                   
     time.sleep(1)
     HoldAndReleaseKey(ENTER, .5)
     time.sleep(2)
@@ -125,6 +150,10 @@ def version_2():
 
             if running:
                 start_time = time.time()
+                print("Started moving up and Accelerating")
+                move_up_and_accelerate()
+                print("Started autopilot")
+                toggle_autopilot()
                 print("Started holding Acceleration and Yaw Right (W + E) ")
                 HoldKey(W)
                 HoldKey(E)
@@ -157,7 +186,13 @@ def version_2():
                 # When the phase ends, run actions and reset the timer
             if remaining <= 0:
                 print("Phase complete — running game actions!")
-                game_acctions()
+                # game_acctions()
+                print("Started auto matic restart of game session")
+                auto_restart_game()
+                print("Started moving up and Accelerating")
+                move_up_and_accelerate()
+                print("Started autopilot")
+                toggle_autopilot()
                 HoldKey(W)                    
                 HoldKey(E) 
                 start_time = time.time()       # restart countdown
