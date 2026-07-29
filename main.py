@@ -2,7 +2,7 @@ import time
 import keyboard
 import pynput
 from KeyCodes import *
-
+from colorama import Fore, Back, Style
 
 running = False
 start_time = 0
@@ -159,14 +159,16 @@ def get_valid_input():
         if user_input == '1' or user_input == '2':
             return user_input
         else:
-            print("Error: Invalid selection. Please enter 1 or 2.\n")
+            print(Fore.RED + "Error: Invalid selection. Please enter 1 or 2.\n")
+            print(Style.RESET_ALL)
 
-# Countdown before starting
-countdown = 5
-while countdown > 0:
-    print(countdown)
-    countdown -= 1
-    time.sleep(1)
+def countdown_to_start():
+    # Countdown before starting
+    countdown = 5
+    while countdown > 0:
+        print(countdown)
+        countdown -= 1
+        time.sleep(1)
 
 
 selection = get_valid_input()
@@ -181,8 +183,10 @@ print("Press Shift+Backspace to quit.")
 print("")
 
 if selection == "1":
-    pass
+    countdown_to_start()
+    version_1()
 elif selection == "2":
+    countdown_to_start()
     version_2()
 else:
     print("error")
